@@ -1,0 +1,75 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.cw.dao;
+
+import com.cw.model.Appointment;
+import com.cw.model.Doctor;
+import com.cw.model.Patient;
+
+/**
+ *
+ * @author daves
+ */
+import java.util.ArrayList;
+import java.util.List;
+
+public class AppointmentDAO {
+    private static List<Appointment> appointments = new ArrayList<>();
+
+    public AppointmentDAO() {
+        this.appointments = new ArrayList<>();
+        appointments.add(new Appointment(1, "2024-05-06", 
+                new Patient(1, "No history", "Fair", 1, "John", "john@example.com", "123 Main St"), 
+                new Doctor(1, "Surgery", 2, "Ben", "ben@example.com", "7/34 Castle St")));
+        appointments.add(new Appointment(2, "2024-04-28", 
+                new Patient(2, "No Significent medical history", "Good", 2, "Stanly", "stanly@example.com", "123 Main St"), 
+                new Doctor(2, "Surgery", 1181, "Ben", "ben@example.com", "7/34 Castle St")));
+    }
+
+    public List<Appointment> getAllAppointments() {
+        return appointments;
+    }
+
+    public Appointment getAppointmentById(int id) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getId() == id) {
+                return appointment;
+            }
+        }
+        return null;
+    }
+
+    public void addAppointment(Appointment appointment) {
+        int nextId = getNextUserId();
+        appointment.setId(nextId);
+        appointments.add(appointment);
+    }
+
+    public void updateAppointment(Appointment updatedAppointment) {
+        for (int i = 0; i < appointments.size(); i++) {
+            Appointment appointment = appointments.get(i);
+            if (appointment.getId() == updatedAppointment.getId()) {
+                appointments.set(i, updatedAppointment);
+                System.out.println("Appointment updated: " + updatedAppointment.toString());
+                break;
+            }
+        }
+    }
+
+    public void deleteAppointment(int id) {
+        appointments.removeIf(appointment -> appointment.getId() == id);
+    }
+
+    private int getNextUserId() {
+        int maxUserId = Integer.MIN_VALUE;
+        for (Appointment appointment : appointments) {
+            if (appointment.getId() > maxUserId) {
+                maxUserId = appointment.getId();
+            }
+        }
+        return maxUserId + 1;
+    }
+}
+
