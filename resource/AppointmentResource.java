@@ -14,6 +14,7 @@ import com.cw.dao.PatientDAO;
 import com.cw.exception.EntityNotFoundException;
 import com.cw.exception.InvalidIdFormatException;
 import com.cw.exception.MissingRequestBodyException;
+import static com.cw.utils.RequestErrorHandler.checkNullRequestBody;
 import com.cw.model.Appointment;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -51,9 +52,7 @@ public class AppointmentResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addAppointment(Appointment appointment) {
-        if (appointment == null) {
-            throw new MissingRequestBodyException("Appointment information is missing");
-        }
+        checkNullRequestBody(appointment);
         int doctorId = appointment.getDoctor().getDoctorId();
         int patientId = appointment.getPatient().getPatientId();
 
@@ -88,9 +87,7 @@ public class AppointmentResource {
         } catch (NumberFormatException e) {
             throw new InvalidIdFormatException("Invalid appointment Id format in the enpoint : " + appointmentIdParam);
         }
-        if (updatedAppointment == null) {
-            throw new MissingRequestBodyException("Appointment information is missing to update appointment Id " + appointmentId);
-        }
+        checkNullRequestBody(updatedAppointment);
 
         Appointment existingAppointment = appointmentDAO.getAppointmentById(appointmentId);
 

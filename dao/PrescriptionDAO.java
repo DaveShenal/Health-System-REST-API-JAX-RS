@@ -19,7 +19,7 @@ public class PrescriptionDAO {
 
     private static List<Prescription> prescriptions = new ArrayList<>();
 
-    public PrescriptionDAO() {
+    static {
         prescriptions.add(new Prescription(1,
                 new Patient(1, "No History", "Excellent", 1, "Robert", "robert@example.com", "7/67 Iwan St"),
                 new Doctor(2, "Cardiologist", 2, "Sam", "sam@example.com", "10/54 Green St"),

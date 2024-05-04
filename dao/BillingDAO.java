@@ -18,7 +18,7 @@ public class BillingDAO {
 
     private static List<Billing> billings = new ArrayList<>();
 
-    public BillingDAO() {
+    static {
         billings.add(new Billing(1,
                 new Patient(1, "No History", "Excellent", 1, "Robert", "robert@example.com", "7/67 Iwan St"),
                  7000, false));
