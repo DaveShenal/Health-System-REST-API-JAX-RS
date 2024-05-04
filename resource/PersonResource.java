@@ -10,9 +10,8 @@ package com.cw.resource;
  */
 import com.cw.dao.PersonDAO;
 import com.cw.exception.EntityNotFoundException;
-import com.cw.exception.InvalidIdFormatException;
-import com.cw.exception.MissingRequestBodyException;
 import com.cw.model.Person;
+import com.cw.utils.RequestErrorHandler;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,59 +36,67 @@ public class PersonResource {
     @GET
     @Path("/{personId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPersonById(@PathParam("personId") int personId) {
-        LOGGER.info("Retrieving person by ID: {}", personId);
+    public Response getPersonById(@PathParam("personId") String personIdParam) {
+
+        int personId = RequestErrorHandler.validateIdParam(personIdParam, "person");
+        checkExistingPerson(personId, "get");
+
+        LOGGER.info("Getting person by person Id: {}", personId);
         Person person = personDAO.getPersonById(personId);
-        if (person != null) {
-            return Response.ok(person).build();
-        } else {
-            throw new EntityNotFoundException("Person with ID " + personId + " not found.");
-        }
+
+        return Response.ok(person).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addPerson(Person person) {
-        if (person == null) {
-            throw new MissingRequestBodyException("Person information is missing");
-        }
+
+        RequestErrorHandler.checkNullRequestBody(person);
+
         LOGGER.info("Adding new person: {}", person);
         personDAO.addPerson(person);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED)
+                .entity("Person successfully added to the database.")
+                .type(MediaType.TEXT_PLAIN)
+                .build();
+
     }
 
     @PUT
     @Path("/{personId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updatePerson(@PathParam("personId") String personIdParam, Person updatedPerson) {
-        int personId;
-        try {
-            personId = Integer.parseInt(personIdParam);
-        } catch (NumberFormatException e) {
-            throw new InvalidIdFormatException("Invalid person Id format in the enpoint : " + personIdParam);
-        }
-        if (updatedPerson == null) {
-            throw new MissingRequestBodyException("Person information is missing for person Id " + personId);
-        }
-        LOGGER.info("Updating person with ID {}", personId);
-        Person existingPerson = personDAO.getPersonById(personId);
 
-        if (existingPerson != null) {
-            updatedPerson.setPersonId(personId);
-            personDAO.updatePerson(updatedPerson);
-            return Response.status(Response.Status.OK)
-                    .entity("Updated the details of person with ID " + personId)
-                    .type(MediaType.TEXT_PLAIN)
-                    .build();
-        }
-        throw new EntityNotFoundException("Person with ID " + personId + " not found to update.");
+        int personId = RequestErrorHandler.validateIdParam(personIdParam, "person");
+
+        RequestErrorHandler.checkNullRequestBody(updatedPerson);
+
+        checkExistingPerson(personId, "update");
+
+        updatedPerson.setPersonId(personId);
+        personDAO.updatePerson(updatedPerson);
+        return Response.status(Response.Status.OK)
+                .entity("Updated the details of person with ID " + personId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     @DELETE
     @Path("/{personId}")
-    public Response deletePerson(@PathParam("personId") int personId) {
+    public Response deletePerson(@PathParam("personId") String personIdParam) {
+
+        int personId = RequestErrorHandler.validateIdParam(personIdParam, "person");
+        checkExistingPerson(personId, "delete");
+
         LOGGER.info("Deleting person with ID: {}", personId);
         personDAO.deletePerson(personId);
         return Response.ok().build();
+    }
+
+    private void checkExistingPerson(int personId, String methodName) throws EntityNotFoundException {
+        Person existingPerson = personDAO.getPersonById(personId);
+        if (existingPerson == null) {
+            throw new EntityNotFoundException("Person with ID " + personId + " not found to " + methodName);
+        }
     }
 }

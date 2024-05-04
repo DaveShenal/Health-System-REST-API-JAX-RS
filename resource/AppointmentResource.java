@@ -9,12 +9,8 @@ package com.cw.resource;
  * @author daves
  */
 import com.cw.dao.AppointmentDAO;
-import com.cw.dao.DoctorDAO;
-import com.cw.dao.PatientDAO;
 import com.cw.exception.EntityNotFoundException;
-import com.cw.exception.InvalidIdFormatException;
-import com.cw.exception.MissingRequestBodyException;
-import static com.cw.utils.RequestErrorHandler.checkNullRequestBody;
+import com.cw.utils.RequestErrorHandler;
 import com.cw.model.Appointment;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -39,41 +35,31 @@ public class AppointmentResource {
     @GET
     @Path("/{appointmentId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAppointmentById(@PathParam("appointmentId") int appointmentId) {
+    public Response getAppointmentById(@PathParam("appointmentId") String appointmentIdParam) {
+
+        int appointmentId = RequestErrorHandler.validateIdParam(appointmentIdParam, "appointment");
+        checkExistingAppoinment(appointmentId, "get");
+
         LOGGER.info("Getting appointment by appointment Id: {}", appointmentId);
         Appointment appointment = appointmentDAO.getAppointmentById(appointmentId);
-        if (appointment != null) {
-            return Response.ok(appointment).build();
-        } else {
-            throw new EntityNotFoundException("Appointment with ID " + appointmentId + " not found.");
-        }
+
+        return Response.ok(appointment).build();
+
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addAppointment(Appointment appointment) {
-        checkNullRequestBody(appointment);
-        int doctorId = appointment.getDoctor().getDoctorId();
-        int patientId = appointment.getPatient().getPatientId();
 
-        if (doctorId == 0) {
-            throw new MissingRequestBodyException("Doctor id is missing");
-        }
-        if (patientId == 0) {
-            throw new MissingRequestBodyException("Patient id is missing");
-        }
-
-        if (!DoctorDAO.doctorIsExist(doctorId)) {
-            throw new EntityNotFoundException("Doctor with ID " + doctorId + " not found.");
-        }
-
-        if (!PatientDAO.patientIsExist(patientId)) {
-            throw new EntityNotFoundException("Patient with ID " + patientId + " not found.");
-        }
+        RequestErrorHandler.checkNullRequestBody(appointment);
+        RequestErrorHandler.validateDoctorId(appointment.getDoctor());
+        RequestErrorHandler.validatePatientId(appointment.getPatient());
 
         appointmentDAO.addAppointment(appointment);
-        return Response.status(Response.Status.CREATED).build();
-
+        return Response.status(Response.Status.CREATED)
+                .entity("Billing successfully added to the database.")
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     @PUT
@@ -81,37 +67,12 @@ public class AppointmentResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateAppointment(@PathParam("appointmentId") String appointmentIdParam, Appointment updatedAppointment) {
 
-        int appointmentId;
-        try {
-            appointmentId = Integer.parseInt(appointmentIdParam);
-        } catch (NumberFormatException e) {
-            throw new InvalidIdFormatException("Invalid appointment Id format in the enpoint : " + appointmentIdParam);
-        }
-        checkNullRequestBody(updatedAppointment);
+        int appointmentId = RequestErrorHandler.validateIdParam(appointmentIdParam, "appointment");
 
-        Appointment existingAppointment = appointmentDAO.getAppointmentById(appointmentId);
-
-        if (existingAppointment == null) {
-            throw new EntityNotFoundException("Appointment with appointment Id " + appointmentId + " not found to update.");
-        }
-
-        int doctorId = updatedAppointment.getDoctor().getDoctorId();
-        int patientId = updatedAppointment.getPatient().getPatientId();
-
-        if (doctorId == 0) {
-            throw new MissingRequestBodyException("Doctor id is missing");
-        }
-        if (patientId == 0) {
-            throw new MissingRequestBodyException("Patient id is missing");
-        }
-
-        if (!DoctorDAO.doctorIsExist(doctorId)) {
-            throw new EntityNotFoundException("Doctor with ID " + doctorId + " not found.");
-        }
-
-        if (!PatientDAO.patientIsExist(patientId)) {
-            throw new EntityNotFoundException("Patient with ID " + patientId + " not found.");
-        }
+        RequestErrorHandler.checkNullRequestBody(updatedAppointment);
+        checkExistingAppoinment(appointmentId, "update");
+        RequestErrorHandler.validateDoctorId(updatedAppointment.getDoctor());
+        RequestErrorHandler.validatePatientId(updatedAppointment.getPatient());
 
         updatedAppointment.setId(appointmentId);
         appointmentDAO.updateAppointment(updatedAppointment);
@@ -124,8 +85,21 @@ public class AppointmentResource {
 
     @DELETE
     @Path("/{appointmentId}")
-    public Response deleteAppointment(@PathParam("appointmentId") int appointmentId) {
+    public Response deleteAppointment(@PathParam("appointmentId") String appointmentIdParam) {
+
+        int appointmentId = RequestErrorHandler.validateIdParam(appointmentIdParam, "appointment");
+
+        checkExistingAppoinment(appointmentId, "delete");
+
         appointmentDAO.deleteAppointment(appointmentId);
         return Response.ok().build();
     }
+
+    private void checkExistingAppoinment(int appointmentId, String methodName) throws EntityNotFoundException {
+        Appointment existingAppointment = appointmentDAO.getAppointmentById(appointmentId);
+        if (existingAppointment == null) {
+            throw new EntityNotFoundException("Appointment with appointment Id " + appointmentId + " not found to " + methodName);
+        }
+    }
+
 }

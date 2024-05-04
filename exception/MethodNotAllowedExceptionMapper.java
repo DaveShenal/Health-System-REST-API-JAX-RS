@@ -24,7 +24,7 @@ public class MethodNotAllowedExceptionMapper implements ExceptionMapper<NotAllow
     public Response toResponse(NotAllowedException exception) {
         LOGGER.error("NotAllowedException caught: {}", exception.getMessage(), exception);
         return Response.status(Response.Status.METHOD_NOT_ALLOWED)
-                .entity("Method Not Allowed: " + exception.getMessage())
+                .entity("Invalid URI: Please check the URL and try again")
                 .build();
     }
 }

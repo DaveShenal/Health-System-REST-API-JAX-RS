@@ -9,10 +9,9 @@ package com.cw.resource;
  * @author daves
  */
 import com.cw.dao.PatientDAO;
-import com.cw.dao.PersonDAO;
 import com.cw.exception.EntityNotFoundException;
-import com.cw.exception.MissingRequestBodyException;
 import com.cw.model.Patient;
+import com.cw.utils.RequestErrorHandler;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,55 +36,65 @@ public class PatientResource {
     @GET
     @Path("/{patientId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPatientById(@PathParam("patientId") int patientId) {
-        LOGGER.info("Getting patient by ID: {}", patientId);
+    public Response getPatientById(@PathParam("patientId") String patientIdParam) {
+
+        int patientId = RequestErrorHandler.validateIdParam(patientIdParam, "patient");
+        checkExistingPatient(patientId, "get");
+
+        LOGGER.info("Getting patient by patient Id: {}", patientId);
         Patient patient = patientDAO.getPatientById(patientId);
-        if (patient != null) {
-            return Response.ok(patient).build();
-        } else {
-            throw new EntityNotFoundException("Patient with ID " + patientId + " not found.");
-        }
+
+        return Response.ok(patient).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addPatient(Patient patient) {
-        if (patient == null) {
-            throw new MissingRequestBodyException("Patient information is missing");
-        }
+
+        RequestErrorHandler.checkNullRequestBody(patient);
 
         LOGGER.info("Adding new patient: {}", patient);
         patientDAO.addPatient(patient);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED)
+                .entity("Patient successfully added to the database.")
+                .type(MediaType.TEXT_PLAIN)
+                .build();
+
     }
 
     @PUT
     @Path("/{patientId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updatePatient(@PathParam("patientId") int patientId, Patient updatedPatient) {
-        if (updatedPatient == null) {
-            throw new MissingRequestBodyException("Patient information is missing for patient Id " + patientId);
-        }
-        LOGGER.info("Updating patient with ID {}", patientId);
-        Patient existingPerson = patientDAO.getPatientById(patientId);
+    public Response updatePatient(@PathParam("patientId") String patientIdParam, Patient updatedPatient) {
 
-        if (existingPerson != null) {
-            updatedPatient.setPatientId(patientId);
-            updatedPatient.setPersonId(existingPerson.getPersonId());
-            patientDAO.updatePatient(updatedPatient);
-            return Response.status(Response.Status.OK)
-                    .entity("Updated the details of patient with ID " + patientId)
-                    .type(MediaType.TEXT_PLAIN)
-                    .build();
-        }
-        throw new EntityNotFoundException("Patient with ID " + patientId + " not found.");
+        int patientId = RequestErrorHandler.validateIdParam(patientIdParam, "patient");
+        RequestErrorHandler.checkNullRequestBody(updatedPatient);
+        checkExistingPatient(patientId, "update");
+
+        updatedPatient.setPatientId(patientId);
+        patientDAO.updatePatient(updatedPatient);
+        return Response.status(Response.Status.OK)
+                .entity("Updated the details of patient with patient Id " + patientId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deletePatient(@PathParam("patientId") int patientId) {
+    public Response deletePatient(@PathParam("patientId") String patientIdParam) {
+
+        int patientId = RequestErrorHandler.validateIdParam(patientIdParam, "patient");
+        checkExistingPatient(patientId, "delete");
+
         LOGGER.info("Deleting patient with ID: {}", patientId);
         patientDAO.deletePatient(patientId);
         return Response.ok().build();
+    }
+
+    private void checkExistingPatient(int patientId, String methodName) throws EntityNotFoundException {
+        Patient existingPatient = patientDAO.getPatientById(patientId);
+        if (existingPatient == null) {
+            throw new EntityNotFoundException("Patient with ID " + patientId + " not found to " + methodName);
+        }
     }
 }

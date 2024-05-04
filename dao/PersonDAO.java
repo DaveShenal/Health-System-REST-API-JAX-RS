@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDAO {
+
     static List<Person> persons = new ArrayList<>();
 
     static {
@@ -49,7 +50,7 @@ public class PersonDAO {
                 System.out.println("Person updated: \n" + updatedPerson.toString());
                 break;
             }
-        }       
+        }
     }
 
     public void deletePerson(int id) {
@@ -65,6 +66,13 @@ public class PersonDAO {
         }
         return maxUserId + 1;
     }
+
+    public static boolean personIsExist(int personId) {
+        for (Person person : persons) {
+            if (person.getPersonId() == personId) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
-
-

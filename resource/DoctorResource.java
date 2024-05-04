@@ -9,10 +9,9 @@ package com.cw.resource;
  * @author daves
  */
 import com.cw.dao.DoctorDAO;
-import com.cw.dao.PersonDAO;
 import com.cw.exception.EntityNotFoundException;
-import com.cw.exception.MissingRequestBodyException;
 import com.cw.model.Doctor;
+import com.cw.utils.RequestErrorHandler;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,54 +36,64 @@ public class DoctorResource {
     @GET
     @Path("/{doctorId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getDoctorById(@PathParam("doctorId") int doctorId) {
-        LOGGER.info("Getting doctor by ID: {}", doctorId);
+    public Response getDoctorById(@PathParam("doctorId") String doctorIdParam) {
+
+        int doctorId = RequestErrorHandler.validateIdParam(doctorIdParam, "doctor");
+        checkExistingDoctor(doctorId, "get");
+
+        LOGGER.info("Getting doctor by doctor Id: {}", doctorId);
         Doctor doctor = doctorDAO.getDoctorById(doctorId);
-        if (doctor != null) {
-            return Response.ok(doctor).build();
-        } else {
-            throw new EntityNotFoundException("Doctor with ID " + doctorId + " not found.");
-        }
+
+        return Response.ok(doctor).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addDoctor(Doctor doctor) {
-        if (doctor == null) {
-            throw new MissingRequestBodyException("Doctor information is missing");
-        }
+        RequestErrorHandler.checkNullRequestBody(doctor);
+
         LOGGER.info("Adding new doctor: {}", doctor);
         doctorDAO.addDoctor(doctor);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED)
+                .entity("Doctor successfully added to the database.")
+                .type(MediaType.TEXT_PLAIN)
+                .build();
+
     }
 
     @PUT
     @Path("/{doctorId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateDoctor(@PathParam("doctorId") int doctorId, Doctor updatedDoctor) {
-        if (updatedDoctor == null) {
-            throw new MissingRequestBodyException("Doctor information is missing for doctor Id " + doctorId);
-        }
-        LOGGER.info("Updating doctor with ID {}: {}", doctorId);
-        Doctor existingPerson = doctorDAO.getDoctorById(doctorId);
+    public Response updateDoctor(@PathParam("doctorId") String doctorIdParam, Doctor updatedDoctor) {
 
-        if (existingPerson != null) {
-            updatedDoctor.setDoctorId(doctorId);
-            updatedDoctor.setPersonId(existingPerson.getPersonId());
-            doctorDAO.updateDoctor(updatedDoctor);
-            return Response.status(Response.Status.OK)
-                    .entity("Updated the details of doctor with ID " + doctorId)
-                    .type(MediaType.TEXT_PLAIN)
-                    .build();
-        }
-        throw new EntityNotFoundException("Doctor with ID " + doctorId + " not found to update.");
+        int doctorId = RequestErrorHandler.validateIdParam(doctorIdParam, "doctor");
+        RequestErrorHandler.checkNullRequestBody(updatedDoctor);
+        checkExistingDoctor(doctorId, "update");
+
+        updatedDoctor.setDoctorId(doctorId);
+        doctorDAO.updateDoctor(updatedDoctor);
+        return Response.status(Response.Status.OK)
+                .entity("Updated the details of doctor with doctor Id " + doctorId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     @DELETE
     @Path("/{doctorId}")
-    public Response deleteDoctor(@PathParam("doctorId") int doctorId) {
+    public Response deleteDoctor(@PathParam("doctorId") String doctorIdParam) {
+
+        int doctorId = RequestErrorHandler.validateIdParam(doctorIdParam, "doctor");
+        checkExistingDoctor(doctorId, "delete");
+
         LOGGER.info("Deleting doctor with ID: {}", doctorId);
         doctorDAO.deleteDoctor(doctorId);
         return Response.ok().build();
+    }
+
+    private void checkExistingDoctor(int doctorId, String methodName) throws EntityNotFoundException {
+        Doctor existingDoctor = doctorDAO.getDoctorById(doctorId);
+        if (existingDoctor == null) {
+            throw new EntityNotFoundException("Doctor with ID " + doctorId + " not found to " + methodName);
+        }
     }
 }
