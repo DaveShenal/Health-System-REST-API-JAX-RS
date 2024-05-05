@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.cw.exception;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ws.rs.core.MediaType;

@@ -66,6 +66,17 @@ public class PatientDAO extends PersonDAO {
     public void deletePatient(int id) {
         patients.removeIf(patient -> patient.getPatientId() == id);
     }
+    
+        public void deleteDoctor(int id) {
+        for (Patient patient : patients) {
+            if (patient.getPatientId() == id) {
+                int patientId = patient.getPersonId();                          
+                PersonDAO.deletePerson(patientId);
+                patients.remove(patient);
+                break;
+            }
+        }
+    }
 
     private int getNextUserId() {
         int maxUserId = Integer.MIN_VALUE;

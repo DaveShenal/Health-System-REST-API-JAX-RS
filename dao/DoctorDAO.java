@@ -5,6 +5,7 @@
 package com.cw.dao;
 
 import com.cw.model.Doctor;
+import com.cw.model.Person;
 
 /**
  *
@@ -51,6 +52,7 @@ public class DoctorDAO extends PersonDAO {
         doctor.setDoctorId(nextId);
         doctor.setPersonId(nextPersonId);
         doctors.add(doctor);
+        PersonDAO.persons.add(doctor);
     }
 
     public void updateDoctor(Doctor updatedDoctor) {
@@ -65,7 +67,14 @@ public class DoctorDAO extends PersonDAO {
     }
 
     public void deleteDoctor(int id) {
-        doctors.removeIf(doctor -> doctor.getDoctorId() == id);
+        for (Doctor doctor : doctors) {
+            if (doctor.getDoctorId() == id) {
+                int personID = doctor.getPersonId();                          
+                PersonDAO.deletePerson(personID);
+                doctors.remove(doctor);
+                break;
+            }
+        }
     }
 
     private int getNextUserId() {
@@ -78,13 +87,13 @@ public class DoctorDAO extends PersonDAO {
         return maxUserId + 1;
     }
 
-public static boolean doctorIsExist(int doctorId) {
-    for (Doctor doctor : doctors) {
-        if (doctor.getDoctorId() == doctorId) {
-            System.out.println("===================");
-            return true; // Doctor with the specified ID exists
+    public static boolean doctorIsExist(int doctorId) {
+        for (Doctor doctor : doctors) {
+            if (doctor.getDoctorId() == doctorId) {
+                System.out.println("===================");
+                return true; // Doctor with the specified ID exists
+            }
         }
+        return false; // Doctor with the specified ID does not exist
     }
-    return false; // Doctor with the specified ID does not exist
-}
 }

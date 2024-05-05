@@ -20,7 +20,8 @@ public class RequestErrorHandler {
 
     public static void checkNullRequestBody(Object obj) throws MissingRequestBodyException {
         if (obj == null) {
-            throw new MissingRequestBodyException("Information is missing in the request body to perform this method");
+            throw new MissingRequestBodyException("Informations are missing in the "
+                    + "request body to perform this method");
         }
     }
 
@@ -56,7 +57,8 @@ public class RequestErrorHandler {
         try {
             id = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            throw new InvalidIdFormatException("Invalid " + className + " ID format in the endpoint: " + idParam);
+            throw new InvalidIdFormatException("Invalid " + className + 
+                    " ID format in the endpoint: " + idParam);
         }
         return id;
     }

@@ -53,7 +53,7 @@ public class PersonDAO {
         }
     }
 
-    public void deletePerson(int id) {
+    public static void deletePerson(int id) {
         persons.removeIf(person -> person.getPersonId() == id);
     }
 
