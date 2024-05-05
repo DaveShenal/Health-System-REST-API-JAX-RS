@@ -51,7 +51,7 @@ public class BillingResource {
     public Response addBilling(Billing billing) {
 
         RequestErrorHandler.checkNullRequestBody(billing);
-        RequestErrorHandler.validatePatientId(billing.getPatient());
+        billing.setPatient(RequestErrorHandler.validatePatientId(billing.getPatient()));
 
         billingDAO.addBilling(billing);
         return Response.status(Response.Status.CREATED)
@@ -69,7 +69,7 @@ public class BillingResource {
         int billingId = RequestErrorHandler.validateIdParam(billingIdParam, "billing");
         RequestErrorHandler.checkNullRequestBody(updatedBilling);
         checkExistingBilling(billingId, "update");
-        RequestErrorHandler.validatePatientId(updatedBilling.getPatient());
+        updatedBilling.setPatient(RequestErrorHandler.validatePatientId(updatedBilling.getPatient()));
 
         updatedBilling.setId(billingId);
         billingDAO.updateBilling(updatedBilling);

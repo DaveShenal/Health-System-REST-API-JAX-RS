@@ -51,7 +51,7 @@ public class MedicalRecordResource {
     public Response addMedicalRecord(MedicalRecord medicalRecord) {
 
         RequestErrorHandler.checkNullRequestBody(medicalRecord);
-        RequestErrorHandler.validatePatientId(medicalRecord.getPatient());
+        medicalRecord.setPatient(RequestErrorHandler.validatePatientId(medicalRecord.getPatient()));
 
         medicalRecordDAO.addMedicalRecord(medicalRecord);
         return Response.status(Response.Status.CREATED)
@@ -68,7 +68,7 @@ public class MedicalRecordResource {
         int recordId = RequestErrorHandler.validateIdParam(recordIdParam, "record");
         RequestErrorHandler.checkNullRequestBody(updatedRecord);
         checkExistingMedicalRecord(recordId, "update");
-        RequestErrorHandler.validatePatientId(updatedRecord.getPatient());
+        updatedRecord.setPatient(RequestErrorHandler.validatePatientId(updatedRecord.getPatient()));
 
         updatedRecord.setId(recordId);
         medicalRecordDAO.updateMedicalRecord(updatedRecord);

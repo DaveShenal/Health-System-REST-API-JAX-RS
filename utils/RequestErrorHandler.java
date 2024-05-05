@@ -25,7 +25,7 @@ public class RequestErrorHandler {
         }
     }
 
-    public static void validateDoctorId(Doctor doctor) {
+    public static Doctor validateDoctorId(Doctor doctor) {
         if (doctor == null) {
             throw new MissingRequestBodyException("Doctor information is missing");
         }
@@ -36,9 +36,10 @@ public class RequestErrorHandler {
         if (!DoctorDAO.doctorIsExist(doctorId)) {
             throw new EntityNotFoundException("Doctor with ID " + doctorId + " not found.");
         }
+        return DoctorDAO.getDoctorById(doctorId);
     }
 
-    public static void validatePatientId(Patient Patient) {
+    public static Patient validatePatientId(Patient Patient) {
         if (Patient == null) {
             throw new MissingRequestBodyException("Patient information is missing");
         }
@@ -50,6 +51,7 @@ public class RequestErrorHandler {
         if (!PatientDAO.patientIsExist(patientId)) {
             throw new EntityNotFoundException("Patient with ID " + patientId + " not found.");
         }
+        return PatientDAO.getPatientById(patientId);
     }
 
     public static int validateIdParam(String idParam, String className) {

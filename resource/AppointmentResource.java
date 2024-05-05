@@ -52,8 +52,9 @@ public class AppointmentResource {
     public Response addAppointment(Appointment appointment) {
 
         RequestErrorHandler.checkNullRequestBody(appointment);
-        RequestErrorHandler.validateDoctorId(appointment.getDoctor());
-        RequestErrorHandler.validatePatientId(appointment.getPatient());
+        // check for existiing doctor and patient and set them
+        appointment.setDoctor(RequestErrorHandler.validateDoctorId(appointment.getDoctor()));
+        appointment.setPatient(RequestErrorHandler.validatePatientId(appointment.getPatient()));
 
         appointmentDAO.addAppointment(appointment);
         return Response.status(Response.Status.CREATED)
@@ -71,8 +72,10 @@ public class AppointmentResource {
 
         RequestErrorHandler.checkNullRequestBody(updatedAppointment);
         checkExistingAppoinment(appointmentId, "update");
-        RequestErrorHandler.validateDoctorId(updatedAppointment.getDoctor());
-        RequestErrorHandler.validatePatientId(updatedAppointment.getPatient());
+        // check for existiing doctor and patient and set them
+        updatedAppointment.setDoctor(RequestErrorHandler.validateDoctorId(updatedAppointment.getDoctor()));
+        updatedAppointment.setPatient(RequestErrorHandler.validatePatientId(updatedAppointment.getPatient()));
+
 
         updatedAppointment.setId(appointmentId);
         appointmentDAO.updateAppointment(updatedAppointment);

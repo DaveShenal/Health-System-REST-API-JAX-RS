@@ -35,7 +35,7 @@ public class PatientDAO extends PersonDAO {
         return patients;
     }
 
-    public Patient getPatientById(int id) {
+    public static Patient getPatientById(int id) {
         for (Patient patient : patients) {
             if (patient.getPatientId() == id) {
                 return patient;
