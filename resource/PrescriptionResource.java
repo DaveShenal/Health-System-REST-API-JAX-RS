@@ -88,7 +88,10 @@ public class PrescriptionResource {
 
         LOGGER.info("Deleting prescription with ID: {}", prescriptionId);
         prescriptionDAO.deletePrescription(prescriptionId);
-        return Response.ok().build();
+        return Response.status(Response.Status.OK)
+                .entity("Deleted prescription with prescription Id " + prescriptionId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     private void checkExistingPrescription(int prescriptionId, String methodName) throws EntityNotFoundException {

@@ -90,7 +90,10 @@ public class PersonResource {
 
         LOGGER.info("Deleting person with ID: {}", personId);
         personDAO.deletePerson(personId);
-        return Response.ok().build();
+        return Response.status(Response.Status.OK)
+                .entity("Deleted person with ID " + personId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     private void checkExistingPerson(int personId, String methodName) throws EntityNotFoundException {

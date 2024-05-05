@@ -20,10 +20,10 @@ public class AppointmentDAO {
     private static List<Appointment> appointments = new ArrayList<>();
 
     static {
-        appointments.add(new Appointment(1, "2024-05-06",
+        appointments.add(new Appointment(1, "2024-05-06","9.00 AM",
                 new Patient(1, "No history", "Fair", 1, "John", "john@example.com", "123 Main St"),
                 new Doctor(1, "Surgery", 2, "Ben", "ben@example.com", "7/34 Castle St")));
-        appointments.add(new Appointment(2, "2024-04-28",
+        appointments.add(new Appointment(2, "2024-04-28","2.00 PM",
                 new Patient(2, "No Significent medical history", "Good", 2, "Stanly", "stanly@example.com", "123 Main St"),
                 new Doctor(2, "Surgery", 1181, "Ben", "ben@example.com", "7/34 Castle St")));
     }

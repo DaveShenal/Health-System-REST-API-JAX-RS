@@ -87,7 +87,10 @@ public class BillingResource {
         checkExistingBilling(billingId, "delete");
 
         billingDAO.deleteBilling(billingId);
-        return Response.ok().build();
+        return Response.status(Response.Status.OK)
+                .entity("Deleted billing with billing Id " + billingId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     private void checkExistingBilling(int billingId, String methodName) throws EntityNotFoundException {

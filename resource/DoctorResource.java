@@ -87,7 +87,10 @@ public class DoctorResource {
 
         LOGGER.info("Deleting doctor with ID: {}", doctorId);
         doctorDAO.deleteDoctor(doctorId);
-        return Response.ok().build();
+        return Response.status(Response.Status.OK)
+                .entity("Deleted doctor with doctor Id " + doctorId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     private void checkExistingDoctor(int doctorId, String methodName) throws EntityNotFoundException {

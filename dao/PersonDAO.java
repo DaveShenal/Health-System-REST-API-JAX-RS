@@ -18,9 +18,9 @@ public class PersonDAO {
     static List<Person> persons = new ArrayList<>();
 
     static {
-        persons.add(new Person(1, "John Doe", "john.doe@example.com", "123 Main St"));
-        persons.add(new Person(2, "Jane Smith", "jane.smith@example.com", "456 Elm St"));
-        persons.add(new Person(3, "Alice Johnson", "alice.johnson@example.com", "789 Oak St"));
+        persons.add(new Person(1, "Dave Perera", "Dave123@gmail.com", "123 Gall Rd"));
+        persons.add(new Person(2, "Dave Shenal", "DaveSehanl@gmail.com", "456 Elm St"));
+        persons.add(new Person(3, "Shenal Perera", "Perera@mail.com", "789 Oak St"));
     }
 
     public List<Person> getAllPersons() {

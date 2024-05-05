@@ -13,16 +13,18 @@ import java.time.LocalDateTime;
 public class Appointment {
 
     private int id;
-    private String dateTime;
+    private String date;
+    private String time;
     private Patient patient;
     private Doctor doctor;
 
     public Appointment() {
     }
 
-    public Appointment(int id, String dateTime, Patient patient, Doctor doctor) {
+    public Appointment(int id, String date,String time, Patient patient, Doctor doctor) {
         this.id = id;
-        this.dateTime = dateTime;
+        this.date = date;
+        this.time = time;
         this.patient = patient;
         this.doctor = doctor;
     }
@@ -35,12 +37,20 @@ public class Appointment {
         this.id = id;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    public String getDate() {
+        return date;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
+    public void setDate(String dateTime) {
+        this.date = dateTime;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public Patient getPatient() {
@@ -62,7 +72,8 @@ public class Appointment {
     @Override
     public String toString() {
         return "Appointment ID: " + id + "\n"
-                + "Date and Time: " + dateTime + "\n"
+                + "Date : " + date + "\n"
+                + "Time : " + time + "\n"
                 + patient.toString() + "\n"
                 + doctor.toString();
     }

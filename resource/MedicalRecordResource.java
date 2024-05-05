@@ -87,7 +87,10 @@ public class MedicalRecordResource {
 
         LOGGER.info("Deleting medical record with ID: {}", recordId);
         medicalRecordDAO.deleteMedicalRecord(recordId);
-        return Response.ok().build();
+        return Response.status(Response.Status.OK)
+                .entity("Deleted medical record with record Id " + recordId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     private void checkExistingMedicalRecord(int recordId, String methodName) throws EntityNotFoundException {

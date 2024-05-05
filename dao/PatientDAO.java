@@ -19,7 +19,7 @@ public class PatientDAO extends PersonDAO {
 
     static {
         Patient patient1 = new Patient(1, "No Significent medical history", "Good", 7, "Stanly", "stanly@example.com", "123 Main St");
-        Patient patient2 = new Patient(1, "No Significent medical history", "Good", 8, "Stanly", "stanly@example.com", "123 Main St");
+        Patient patient2 = new Patient(2, "No Significent medical history", "Good", 8, "Stanly", "stanly@example.com", "123 Main St");
         Patient patient3 = new Patient(3, "No History", "Excellent", 9, "Robert", "robert@example.com", "7/67 Iwan St");
 
         patients.add(patient1);

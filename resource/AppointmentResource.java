@@ -57,7 +57,7 @@ public class AppointmentResource {
 
         appointmentDAO.addAppointment(appointment);
         return Response.status(Response.Status.CREATED)
-                .entity("Billing successfully added to the database.")
+                .entity("Appointment successfully added to the database.")
                 .type(MediaType.TEXT_PLAIN)
                 .build();
     }
@@ -92,7 +92,10 @@ public class AppointmentResource {
         checkExistingAppoinment(appointmentId, "delete");
 
         appointmentDAO.deleteAppointment(appointmentId);
-        return Response.ok().build();
+        return Response.status(Response.Status.OK)
+                .entity("Deleted appointment with appointment Id " + appointmentId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     private void checkExistingAppoinment(int appointmentId, String methodName) throws EntityNotFoundException {

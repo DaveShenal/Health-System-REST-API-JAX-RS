@@ -80,7 +80,7 @@ public class PatientResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/{patientId}")
     public Response deletePatient(@PathParam("patientId") String patientIdParam) {
 
         int patientId = RequestErrorHandler.validateIdParam(patientIdParam, "patient");
@@ -88,7 +88,10 @@ public class PatientResource {
 
         LOGGER.info("Deleting patient with ID: {}", patientId);
         patientDAO.deletePatient(patientId);
-        return Response.ok().build();
+        return Response.status(Response.Status.OK)
+                .entity("Deleted patient with patient Id " + patientId)
+                .type(MediaType.TEXT_PLAIN)
+                .build();
     }
 
     private void checkExistingPatient(int patientId, String methodName) throws EntityNotFoundException {
