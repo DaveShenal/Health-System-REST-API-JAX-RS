@@ -58,13 +58,4 @@ public class Person {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    @Override
-    public String toString() {
-        return "Person ID: " + personId + "\n"
-                + "Name: " + name + "\n"
-                + "Contact Information: " + contactInformation + "\n"
-                + "Address: " + address;
-    }
-
 }

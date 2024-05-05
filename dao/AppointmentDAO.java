@@ -21,11 +21,11 @@ public class AppointmentDAO {
 
     static {
         appointments.add(new Appointment(1, "2024-05-06","9.00 AM",
-                new Patient(1, "No history", "Fair", 1, "John", "john@example.com", "123 Main St"),
-                new Doctor(1, "Surgery", 2, "Ben", "ben@example.com", "7/34 Castle St")));
+                new Patient(4, "No history", "Fair", 10, "John", "john@example.com", "123 Main St"),
+                new Doctor(4, "Surgery", 11, "Ben", "ben@example.com", "7/34 Castle St")));
         appointments.add(new Appointment(2, "2024-04-28","2.00 PM",
-                new Patient(2, "No Significent medical history", "Good", 2, "Stanly", "stanly@example.com", "123 Main St"),
-                new Doctor(2, "Surgery", 1181, "Ben", "ben@example.com", "7/34 Castle St")));
+                new Patient(5, "No Significent medical history", "Good", 12, "Stanly", "stanly@example.com", "123 Main St"),
+                new Doctor(5, "Surgery", 13, "Ben", "ben@example.com", "7/34 Castle St")));
     }
 
     public List<Appointment> getAllAppointments() {
@@ -51,8 +51,7 @@ public class AppointmentDAO {
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
             if (appointment.getId() == updatedAppointment.getId()) {
-                appointments.set(i, updatedAppointment);
-                System.out.println("Appointment updated: " + updatedAppointment.toString());
+                appointments.set(i, updatedAppointment);               
                 break;
             }
         }

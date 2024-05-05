@@ -49,13 +49,4 @@ public class Patient extends Person {
     public void setCurrentHealthStatus(String currentHealthStatus) {
         this.currentHealthStatus = currentHealthStatus;
     }
-
-    @Override
-    public String toString() {
-        return super.toString() + "\n"
-                + "Patient ID: " + patientId + "\n"
-                + "Medical History: " + medicalHistory + "\n"
-                + "Current Health Status: " + currentHealthStatus;
-    }
-
 }

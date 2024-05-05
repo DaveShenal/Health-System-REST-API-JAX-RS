@@ -52,6 +52,7 @@ public class PrescriptionResource {
 
         RequestErrorHandler.checkNullRequestBody(prescription);
         prescription.setPatient(RequestErrorHandler.validatePatientId(prescription.getPatient()));
+        prescription.setDoctor(RequestErrorHandler.validateDoctorId(prescription.getDoctor()));
 
         prescriptionDAO.addPrescription(prescription);
         return Response.status(Response.Status.CREATED)
@@ -70,6 +71,7 @@ public class PrescriptionResource {
         RequestErrorHandler.checkNullRequestBody(updatedPrescription);
         checkExistingPrescription(prescriptionId, "update");
         updatedPrescription.setPatient(RequestErrorHandler.validatePatientId(updatedPrescription.getPatient()));
+        updatedPrescription.setDoctor(RequestErrorHandler.validateDoctorId(updatedPrescription.getDoctor()));
 
         updatedPrescription.setId(prescriptionId);
         prescriptionDAO.updatePrescription(updatedPrescription);

@@ -57,12 +57,4 @@ public class Billing {
         this.isPaid = isPaid;
     }
 
-    @Override
-    public String toString() {
-        return "Invoice ID: " + id + "\n"
-                + patient.toString() + "\n"
-                + "Amount: $" + amount + "\n"
-                + "Is Paid: " + (isPaid ? "Yes" : "No");
-    }
-
 }

@@ -57,7 +57,6 @@ public class PatientDAO extends PersonDAO {
             Patient patient = patients.get(i);
             if (patient.getPatientId() == updatedPatient.getPatientId()) {
                 patients.set(i, updatedPatient);
-                System.out.println("Patient updated: " + updatedPatient.toString());
                 break;
             }
         }

@@ -21,11 +21,11 @@ public class MedicalRecordDAO {
 
     static {
         medicalRecords.add(new MedicalRecord(1,
-                new Patient(1, "Allergic to meat", "Fair", 17, "Hanks", "hanks@example.com", "56 Omaba St"),
+                new Patient(9, "Allergic to meat", "Fair", 17, "Hanks", "hanks@example.com", "56 Omaba St"),
                 Arrays.asList("Common cold", "Influenza"),
                 Arrays.asList("medication")));
         medicalRecords.add(new MedicalRecord(2,
-                new Patient(2, "No Significent medical history", "Good", 10, "Stanly", "stanly@example.com", "123 Main St"),
+                new Patient(10, "No Significent medical history", "Good", 18, "Stanly", "stanly@example.com", "123 Main St"),
                 Arrays.asList("none"),
                 Arrays.asList("Rutine Checkup")));
     }
@@ -54,7 +54,6 @@ public class MedicalRecordDAO {
             MedicalRecord medicalRecord = medicalRecords.get(i);
             if (medicalRecord.getId() == updatedMedicalRecord.getId()) {
                 medicalRecords.set(i, updatedMedicalRecord);
-                System.out.println("Medical record updated: " + updatedMedicalRecord.toString());
                 break;
             }
         }

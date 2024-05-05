@@ -86,16 +86,4 @@ public class Prescription {
     public void setDuration(String duration) {
         this.duration = duration;
     }
-
-    @Override
-    public String toString() {
-        return "Prescription ID: " + id + "\n"
-                + patient.toString() + "\n"
-                + doctor.toString() + "\n"
-                + "Medication: " + medication + "\n"
-                + "Dosage: " + dosage + "\n"
-                + "Instructions: " + instructions + "\n"
-                + "Duration: " + duration;
-    }
-
 }

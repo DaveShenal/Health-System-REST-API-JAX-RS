@@ -60,7 +60,6 @@ public class DoctorDAO extends PersonDAO {
             Doctor doctor = doctors.get(i);
             if (doctor.getDoctorId() == updatedDoctor.getDoctorId()) {
                 doctors.set(i, updatedDoctor);
-                System.out.println("Doctor updated: " + updatedDoctor.toString());
                 break;
             }
         }

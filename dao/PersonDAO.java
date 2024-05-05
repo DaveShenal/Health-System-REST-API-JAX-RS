@@ -47,7 +47,6 @@ public class PersonDAO {
             Person person = persons.get(i);
             if (person.getPersonId() == updatedPerson.getPersonId()) {
                 persons.set(i, updatedPerson);
-                System.out.println("Person updated: \n" + updatedPerson.toString());
                 break;
             }
         }

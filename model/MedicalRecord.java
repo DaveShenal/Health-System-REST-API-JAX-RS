@@ -58,13 +58,4 @@ public class MedicalRecord {
     public void setTreatments(List<String> treatments) {
         this.treatments = treatments;
     }
-
-    @Override
-    public String toString() {
-        return "Medical Record ID: " + id + "\n"
-                + patient.toString() + "\n"
-                + "Diagnoses: " + diagnoses.toString() + "\n"
-                + "Treatments: " + treatments.toString();
-    }
-
 }
