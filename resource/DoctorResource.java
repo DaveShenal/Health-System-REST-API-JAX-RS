@@ -22,10 +22,13 @@ import org.slf4j.LoggerFactory;
 @Path("/doctors")
 public class DoctorResource {
 
+    // Logger for logging information
     private static final Logger LOGGER = LoggerFactory.getLogger(DoctorResource.class);
 
+    // Data Access Object for managing doctors
     private DoctorDAO doctorDAO = new DoctorDAO();
 
+    // Retrieve all doctors
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Doctor> getAllDoctors() {
@@ -33,27 +36,35 @@ public class DoctorResource {
         return doctorDAO.getAllDoctors();
     }
 
+    // Retrieve doctor by ID
     @GET
     @Path("/{doctorId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDoctorById(@PathParam("doctorId") String doctorIdParam) {
-
+        // Validate and parse doctor ID
         int doctorId = RequestErrorHandler.validateIdParam(doctorIdParam, "doctor");
+
+        // Check if doctor exists
         checkExistingDoctor(doctorId, "get");
 
-        LOGGER.info("Getting doctor by doctor Id: {}", doctorId);
+        // Retrieve doctor by ID
+        LOGGER.info("Getting doctor by ID: {}", doctorId);
         Doctor doctor = doctorDAO.getDoctorById(doctorId);
 
         return Response.ok(doctor).build();
     }
 
+    // Add a new doctor
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addDoctor(Doctor doctor) {
+        // Validate request body
         RequestErrorHandler.checkNullRequestBody(doctor);
 
+        // Add doctor
         LOGGER.info("Adding new doctor: {}", doctor);
         doctorDAO.addDoctor(doctor);
+
         return Response.status(Response.Status.CREATED)
                 .entity("Doctor successfully added to the database.")
                 .type(MediaType.TEXT_PLAIN)
@@ -61,41 +72,58 @@ public class DoctorResource {
 
     }
 
+    // Update an existing doctor
     @PUT
     @Path("/{doctorId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateDoctor(@PathParam("doctorId") String doctorIdParam, Doctor updatedDoctor) {
-
+        // Validate and parse doctor ID
         int doctorId = RequestErrorHandler.validateIdParam(doctorIdParam, "doctor");
+
+        // Validate request body
         RequestErrorHandler.checkNullRequestBody(updatedDoctor);
+        // Check if doctor exists
         checkExistingDoctor(doctorId, "update");
 
+        // Update doctor
         updatedDoctor.setDoctorId(doctorId);
         doctorDAO.updateDoctor(updatedDoctor);
+
+        // Log success message
+        LOGGER.info("Updated doctor with ID {}: {}", doctorId, updatedDoctor);
+
         return Response.status(Response.Status.OK)
-                .entity("Updated the details of doctor with doctor Id " + doctorId)
+                .entity("Updated the details of doctor with doctor ID " + doctorId)
                 .type(MediaType.TEXT_PLAIN)
                 .build();
     }
 
+    // Delete a doctor by ID
     @DELETE
     @Path("/{doctorId}")
     public Response deleteDoctor(@PathParam("doctorId") String doctorIdParam) {
-
+        // Validate and parse doctor ID
         int doctorId = RequestErrorHandler.validateIdParam(doctorIdParam, "doctor");
+
+        // Check if doctor exists
         checkExistingDoctor(doctorId, "delete");
 
+        // Delete doctor
         LOGGER.info("Deleting doctor with ID: {}", doctorId);
         doctorDAO.deleteDoctor(doctorId);
+
         return Response.status(Response.Status.OK)
-                .entity("Deleted doctor with doctor Id " + doctorId)
+                .entity("Deleted doctor with doctor ID " + doctorId)
                 .type(MediaType.TEXT_PLAIN)
                 .build();
     }
 
+    // Helper method to check if a doctor exists
     private void checkExistingDoctor(int doctorId, String methodName) throws EntityNotFoundException {
         Doctor existingDoctor = doctorDAO.getDoctorById(doctorId);
         if (existingDoctor == null) {
+            // Log error message
+            LOGGER.error("Doctor with ID {} not found to {}", doctorId, methodName);
             throw new EntityNotFoundException("Doctor with ID " + doctorId + " not found to " + methodName);
         }
     }

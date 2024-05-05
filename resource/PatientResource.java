@@ -22,10 +22,13 @@ import org.slf4j.LoggerFactory;
 @Path("/patients")
 public class PatientResource {
 
+    // Logger for logging information
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientResource.class);
 
+    // Data Access Object for managing patients
     private PatientDAO patientDAO = new PatientDAO();
 
+    // Retrieve all patients
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Patient> getAllPatients() {
@@ -33,28 +36,35 @@ public class PatientResource {
         return patientDAO.getAllPatients();
     }
 
+    // Retrieve patient by ID
     @GET
     @Path("/{patientId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPatientById(@PathParam("patientId") String patientIdParam) {
-
+        // Validate and parse patient ID
         int patientId = RequestErrorHandler.validateIdParam(patientIdParam, "patient");
+
+        // Check if patient exists
         checkExistingPatient(patientId, "get");
 
-        LOGGER.info("Getting patient by patient Id: {}", patientId);
+        // Retrieve patient by ID
+        LOGGER.info("Getting patient by ID: {}", patientId);
         Patient patient = patientDAO.getPatientById(patientId);
 
         return Response.ok(patient).build();
     }
 
+    // Add a new patient
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addPatient(Patient patient) {
-
+        // Validate request body
         RequestErrorHandler.checkNullRequestBody(patient);
 
+        // Add patient
         LOGGER.info("Adding new patient: {}", patient);
         patientDAO.addPatient(patient);
+
         return Response.status(Response.Status.CREATED)
                 .entity("Patient successfully added to the database.")
                 .type(MediaType.TEXT_PLAIN)
@@ -62,41 +72,58 @@ public class PatientResource {
 
     }
 
+    // Update an existing patient
     @PUT
     @Path("/{patientId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updatePatient(@PathParam("patientId") String patientIdParam, Patient updatedPatient) {
-
+        // Validate and parse patient ID
         int patientId = RequestErrorHandler.validateIdParam(patientIdParam, "patient");
+
+        // Validate request body
         RequestErrorHandler.checkNullRequestBody(updatedPatient);
+        // Check if patient exists
         checkExistingPatient(patientId, "update");
 
+        // Update patient
         updatedPatient.setPatientId(patientId);
         patientDAO.updatePatient(updatedPatient);
+
+        // Log success message
+        LOGGER.info("Updated patient with ID {}: {}", patientId, updatedPatient);
+
         return Response.status(Response.Status.OK)
-                .entity("Updated the details of patient with patient Id " + patientId)
+                .entity("Updated the details of patient with patient ID " + patientId)
                 .type(MediaType.TEXT_PLAIN)
                 .build();
     }
 
+    // Delete a patient by ID
     @DELETE
     @Path("/{patientId}")
     public Response deletePatient(@PathParam("patientId") String patientIdParam) {
-
+        // Validate and parse patient ID
         int patientId = RequestErrorHandler.validateIdParam(patientIdParam, "patient");
+
+        // Check if patient exists
         checkExistingPatient(patientId, "delete");
 
+        // Delete patient
         LOGGER.info("Deleting patient with ID: {}", patientId);
         patientDAO.deletePatient(patientId);
+
         return Response.status(Response.Status.OK)
-                .entity("Deleted patient with patient Id " + patientId)
+                .entity("Deleted patient with patient ID " + patientId)
                 .type(MediaType.TEXT_PLAIN)
                 .build();
     }
 
+    // Helper method to check if a patient exists
     private void checkExistingPatient(int patientId, String methodName) throws EntityNotFoundException {
         Patient existingPatient = patientDAO.getPatientById(patientId);
         if (existingPatient == null) {
+            // Log error message
+            LOGGER.error("Patient with ID {} not found to {}", patientId, methodName);
             throw new EntityNotFoundException("Patient with ID " + patientId + " not found to " + methodName);
         }
     }
