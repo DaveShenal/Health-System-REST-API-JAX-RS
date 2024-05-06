@@ -20,14 +20,14 @@ public class BillingDAO {
 
     static {
         billings.add(new Billing(1,
-                new Patient(6, "No History", "Excellent", 14, "Robert", "robert@example.com", "7/67 Iwan St"),
-                 7000, false));
+                new Patient(1, "No Significent medical history", "Good", 7, "Stanly", "stanly@example.com", "123 Main St"),
+                7000, false));
         billings.add(new Billing(2,
-                new Patient(7, "No History", "Good", 15, "Jane", "Jane@example.com", "123 Main St"),
-                 12000, false));
+                new Patient(3, "No History", "Excellent", 9, "Robert", "robert@example.com", "7/67 Iwan St"),
+                12000, false));
         billings.add(new Billing(3,
-                new Patient(8, "Allergic", "Fair", 16, "Don", "Don@example.com", "56 Lake St"),
-                 13000, true));
+                new Patient(2, "No Significent medical history", "Good", 8, "Stanly", "stanly@example.com", "123 Main St"),
+                13000, true));
     }
 
     public List<Billing> getAllBillings() {
@@ -53,7 +53,7 @@ public class BillingDAO {
         for (int i = 0; i < billings.size(); i++) {
             Billing billing = billings.get(i);
             if (billing.getId() == updatedBilling.getId()) {
-                billings.set(i, updatedBilling);              
+                billings.set(i, updatedBilling);
                 break;
             }
         }

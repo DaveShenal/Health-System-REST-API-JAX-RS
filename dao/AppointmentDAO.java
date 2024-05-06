@@ -20,12 +20,12 @@ public class AppointmentDAO {
     private static List<Appointment> appointments = new ArrayList<>();
 
     static {
-        appointments.add(new Appointment(1, "2024-05-06","9.00 AM",
-                new Patient(4, "No history", "Fair", 10, "John", "john@example.com", "123 Main St"),
-                new Doctor(4, "Surgery", 11, "Ben", "ben@example.com", "7/34 Castle St")));
-        appointments.add(new Appointment(2, "2024-04-28","2.00 PM",
-                new Patient(5, "No Significent medical history", "Good", 12, "Stanly", "stanly@example.com", "123 Main St"),
-                new Doctor(5, "Surgery", 13, "Ben", "ben@example.com", "7/34 Castle St")));
+        appointments.add(new Appointment(1, "2024-05-06", "9.00 AM",
+                new Patient(2, "No Significent medical history", "Good", 8, "Stanly", "stanly@example.com", "123 Main St"),
+                new Doctor(2, "Cardiologist", 5, "Sam", "sam@example.com", "10/54 Green St")));
+        appointments.add(new Appointment(2, "2024-04-28", "2.00 PM",
+                new Patient(1, "No Significent medical history", "Good", 7, "Stanly", "stanly@example.com", "123 Main St"),
+                new Doctor(3, "General Practitioner", 6, "Tom", "tom@example.com", "14/19  St")));
     }
 
     public List<Appointment> getAllAppointments() {
@@ -51,7 +51,7 @@ public class AppointmentDAO {
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
             if (appointment.getId() == updatedAppointment.getId()) {
-                appointments.set(i, updatedAppointment);               
+                appointments.set(i, updatedAppointment);
                 break;
             }
         }

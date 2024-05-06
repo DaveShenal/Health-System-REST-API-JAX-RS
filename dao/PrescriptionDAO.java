@@ -21,8 +21,8 @@ public class PrescriptionDAO {
 
     static {
         prescriptions.add(new Prescription(1,
-                new Patient(11, "No History", "Excellent", 19, "Robert", "robert@example.com", "7/67 Iwan St"),
-                new Doctor(6, "Cardiologist", 20, "Sam", "sam@example.com", "10/54 Green St"),
+                new Patient(2, "No Significent medical history", "Good", 8, "Stanly", "stanly@example.com", "123 Main St"),
+                new Doctor(2, "Cardiologist", 5, "Sam", "sam@example.com", "10/54 Green St"),
                 "Aspirin", "500mg", "Take with water", "7 days"));
     }
 
@@ -49,7 +49,7 @@ public class PrescriptionDAO {
         for (int i = 0; i < prescriptions.size(); i++) {
             Prescription prescription = prescriptions.get(i);
             if (prescription.getId() == updatedPrescription.getId()) {
-                prescriptions.set(i, updatedPrescription);               
+                prescriptions.set(i, updatedPrescription);
                 break;
             }
         }

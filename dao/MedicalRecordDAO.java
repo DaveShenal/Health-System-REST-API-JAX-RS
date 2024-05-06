@@ -21,11 +21,11 @@ public class MedicalRecordDAO {
 
     static {
         medicalRecords.add(new MedicalRecord(1,
-                new Patient(9, "Allergic to meat", "Fair", 17, "Hanks", "hanks@example.com", "56 Omaba St"),
+                new Patient(3, "No History", "Excellent", 9, "Robert", "robert@example.com", "7/67 Iwan St"),
                 Arrays.asList("Common cold", "Influenza"),
                 Arrays.asList("medication")));
         medicalRecords.add(new MedicalRecord(2,
-                new Patient(10, "No Significent medical history", "Good", 18, "Stanly", "stanly@example.com", "123 Main St"),
+                new Patient(2, "No Significent medical history", "Good", 8, "Stanly", "stanly@example.com", "123 Main St"),
                 Arrays.asList("none"),
                 Arrays.asList("Rutine Checkup")));
     }
