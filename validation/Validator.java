@@ -9,6 +9,7 @@ package com.cw.validation;
  * @author daves
  */
 public interface Validator {
+    // method to check if all fields are assigned
     boolean areAllFieldsFilled();
     
 }

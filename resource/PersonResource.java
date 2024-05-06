@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 @Path("/persons")
 public class PersonResource {
-
+    
     // Logger for logging information
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonResource.class);
 
@@ -32,6 +32,9 @@ public class PersonResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Person> getAllPersons() {
+        int n1 = 0;
+        int n2 = 10;
+        int n3 = n2/n1;
         LOGGER.info("Retrieving all persons.");
         return personDAO.getAllPersons();
     }
