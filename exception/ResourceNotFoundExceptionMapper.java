@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 @Provider
 public class ResourceNotFoundExceptionMapper implements ExceptionMapper<NotFoundException> {
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(EntityNotFoundExceptionMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceNotFoundExceptionMapper.class);
 
     @Override
     public Response toResponse(NotFoundException exception) {

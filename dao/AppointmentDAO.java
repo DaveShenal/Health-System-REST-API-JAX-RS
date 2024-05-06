@@ -21,11 +21,15 @@ public class AppointmentDAO {
 
     static {
         appointments.add(new Appointment(1, "2024-05-06", "9.00 AM",
-                new Patient(2, "No Significent medical history", "Good", 8, "Stanly", "stanly@example.com", "123 Main St"),
-                new Doctor(2, "Cardiologist", 5, "Sam", "sam@example.com", "10/54 Green St")));
+                new Patient(2, "No Significent medical history", "Good", 
+                        8, "Stanly", "stanly@example.com", "123 Main St"),
+                new Doctor(2, "Cardiologist", 5, "Sam", 
+                        "sam@example.com", "10/54 Green St")));
         appointments.add(new Appointment(2, "2024-04-28", "2.00 PM",
-                new Patient(1, "No Significent medical history", "Good", 7, "Stanly", "stanly@example.com", "123 Main St"),
-                new Doctor(3, "General Practitioner", 6, "Tom", "tom@example.com", "14/19  St")));
+                new Patient(1, "No Significent medical history", "Good", 
+                        7, "Stanly", "stanly@example.com", "123 Main St"),
+                new Doctor(3, "General Practitioner", 6, "Tom", 
+                        "tom@example.com", "14/19  St")));
     }
 
     public List<Appointment> getAllAppointments() {
@@ -42,7 +46,7 @@ public class AppointmentDAO {
     }
 
     public void addAppointment(Appointment appointment) {
-        int nextId = getNextUserId();
+        int nextId = getNextAppointmentId();
         appointment.setId(nextId);
         appointments.add(appointment);
     }
@@ -61,7 +65,7 @@ public class AppointmentDAO {
         appointments.removeIf(appointment -> appointment.getId() == id);
     }
 
-    private int getNextUserId() {
+    private int getNextAppointmentId() {
         int maxUserId = Integer.MIN_VALUE;
         for (Appointment appointment : appointments) {
             if (appointment.getId() > maxUserId) {
