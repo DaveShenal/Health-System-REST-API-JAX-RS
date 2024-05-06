@@ -57,4 +57,8 @@ public class Billing {
         this.isPaid = isPaid;
     }
 
+    public boolean areAllFieldsFilled() {
+        return patient != null && amount != 0.0;
+    }
+
 }

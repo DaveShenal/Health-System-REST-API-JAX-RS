@@ -86,4 +86,8 @@ public class Prescription {
     public void setDuration(String duration) {
         this.duration = duration;
     }
+
+    public boolean areAllFieldsFilled() {
+        return patient != null && doctor != null && medication != null && !medication.isEmpty() && dosage != null && !dosage.isEmpty() && instructions != null && !instructions.isEmpty() && duration != null && !duration.isEmpty();
+    }
 }

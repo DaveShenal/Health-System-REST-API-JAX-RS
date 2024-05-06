@@ -58,4 +58,8 @@ public class Person {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public boolean areAllFieldsFilled() {
+        return name != null && !name.isEmpty() && contactInformation != null && !contactInformation.isEmpty() && address != null && !address.isEmpty();
+    }
 }

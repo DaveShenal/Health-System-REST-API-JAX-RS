@@ -58,4 +58,8 @@ public class MedicalRecord {
     public void setTreatments(List<String> treatments) {
         this.treatments = treatments;
     }
+
+    public boolean areAllFieldsFilled() {
+        return patient != null && diagnoses != null && !diagnoses.isEmpty() && treatments != null && !treatments.isEmpty();
+    }
 }

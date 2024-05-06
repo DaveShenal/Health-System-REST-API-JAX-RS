@@ -11,7 +11,7 @@ package com.cw.resource;
 import com.cw.dao.PersonDAO;
 import com.cw.exception.EntityNotFoundException;
 import com.cw.model.Person;
-import com.cw.utils.RequestErrorHandler;
+import com.cw.validation.RequestErrorHandler;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

@@ -10,7 +10,7 @@ package com.cw.resource;
  */
 import com.cw.dao.AppointmentDAO;
 import com.cw.exception.EntityNotFoundException;
-import com.cw.utils.RequestErrorHandler;
+import com.cw.validation.RequestErrorHandler;
 import com.cw.model.Appointment;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

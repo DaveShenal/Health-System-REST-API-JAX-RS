@@ -39,4 +39,10 @@ public class Doctor extends Person {
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }
+    
+    
+    @Override
+    public boolean areAllFieldsFilled() {
+        return specialization != null && !specialization.isEmpty();
+    }
 }

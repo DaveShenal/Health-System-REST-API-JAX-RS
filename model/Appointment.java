@@ -8,7 +8,6 @@ package com.cw.model;
  *
  * @author daves
  */
-import java.time.LocalDateTime;
 
 public class Appointment {
 
@@ -21,7 +20,7 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(int id, String date,String time, Patient patient, Doctor doctor) {
+    public Appointment(int id, String date, String time, Patient patient, Doctor doctor) {
         this.id = id;
         this.date = date;
         this.time = time;
@@ -67,5 +66,9 @@ public class Appointment {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+    public boolean areAllFieldsFilled() {
+        return date != null && !date.isEmpty() && time != null && !time.isEmpty() && patient != null && doctor != null;
     }
 }
