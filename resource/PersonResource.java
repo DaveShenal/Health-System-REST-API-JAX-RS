@@ -59,7 +59,7 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addPerson(Person person) {
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(person);
+        RequestErrorHandler.validateEntitiy(person, "Person");
 
         // Add person
         LOGGER.info("Adding new person: {}", person);
@@ -81,7 +81,7 @@ public class PersonResource {
         int personId = RequestErrorHandler.validateIdParam(personIdParam, "person");
 
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(updatedPerson);
+        RequestErrorHandler.validateEntitiy(updatedPerson, "Person");
         // Check if person exists
         checkExistingPerson(personId, "update");
 

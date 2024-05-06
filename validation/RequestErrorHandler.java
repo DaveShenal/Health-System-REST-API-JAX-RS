@@ -13,22 +13,13 @@ import com.cw.dao.PatientDAO;
 import com.cw.exception.EntityNotFoundException;
 import com.cw.exception.InvalidIdFormatException;
 import com.cw.exception.MissingRequestBodyException;
+import com.cw.exception.MissingRequiredFieldException;
 import com.cw.model.Doctor;
 import com.cw.model.Patient;
 
 public class RequestErrorHandler {
 
-    public static void checkNullRequestBody(Object obj) throws MissingRequestBodyException {
-        if (obj == null) {
-            throw new MissingRequestBodyException("Informations are missing in the "
-                    + "request body to perform this method");
-        }
-    }
-
-    public static Doctor validateDoctorId(Doctor doctor) {
-        if (doctor == null) {
-            throw new MissingRequestBodyException("Doctor information is missing");
-        }
+    public static Doctor validateDoctorId(Doctor doctor) {        
         int doctorId = doctor.getDoctorId();
         if (doctorId == 0) {
             throw new MissingRequestBodyException("Doctor ID is missing");
@@ -39,10 +30,7 @@ public class RequestErrorHandler {
         return DoctorDAO.getDoctorById(doctorId);
     }
 
-    public static Patient validatePatientId(Patient Patient) {
-        if (Patient == null) {
-            throw new MissingRequestBodyException("Patient information is missing");
-        }
+    public static Patient validatePatientId(Patient Patient) {      
         int patientId = Patient.getPatientId();
 
         if (patientId == 0) {
@@ -59,10 +47,20 @@ public class RequestErrorHandler {
         try {
             id = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            throw new InvalidIdFormatException("Invalid " + className + 
-                    " ID format in the endpoint: " + idParam);
+            throw new InvalidIdFormatException("Invalid " + className
+                    + " ID format in the endpoint: " + idParam);
         }
         return id;
+    }
+
+    public static void validateEntitiy(Validator entity, String EntityName) {
+        if (entity == null) {
+            throw new MissingRequestBodyException(EntityName + " Informations are missing in the "
+                    + "request body to perform this method");
+        }
+        if (!entity.areAllFieldsFilled()) {
+            throw new MissingRequiredFieldException(EntityName);
+        }
     }
 
 }

@@ -59,7 +59,7 @@ public class BillingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addBilling(Billing billing) {
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(billing);
+        RequestErrorHandler.validateEntitiy(billing,"Billing");
         // Validate and set patient
         billing.setPatient(RequestErrorHandler.validatePatientId(billing.getPatient()));
 
@@ -84,7 +84,7 @@ public class BillingResource {
         int billingId = RequestErrorHandler.validateIdParam(billingIdParam, "billing");
 
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(updatedBilling);
+        RequestErrorHandler.validateEntitiy(updatedBilling,"Billing");
         // Check if billing exists
         checkExistingBilling(billingId, "update");
         // Validate and set patient

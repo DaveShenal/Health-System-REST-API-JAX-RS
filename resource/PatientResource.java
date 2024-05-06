@@ -59,7 +59,7 @@ public class PatientResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addPatient(Patient patient) {
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(patient);
+        RequestErrorHandler.validateEntitiy(patient,"Patient");
 
         // Add patient
         LOGGER.info("Adding new patient: {}", patient);
@@ -81,7 +81,7 @@ public class PatientResource {
         int patientId = RequestErrorHandler.validateIdParam(patientIdParam, "patient");
 
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(updatedPatient);
+        RequestErrorHandler.validateEntitiy(updatedPatient, "Patient");
         // Check if patient exists
         checkExistingPatient(patientId, "update");
 

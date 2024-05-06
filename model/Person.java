@@ -4,11 +4,13 @@
  */
 package com.cw.model;
 
+import com.cw.validation.Validator;
+
 /**
  *
  * @author daves
  */
-public class Person {
+public class Person implements Validator{
 
     private int personId;
     private String name;
@@ -59,6 +61,7 @@ public class Person {
         this.address = address;
     }
 
+    @Override
     public boolean areAllFieldsFilled() {
         return name != null && !name.isEmpty() && contactInformation != null && !contactInformation.isEmpty() && address != null && !address.isEmpty();
     }

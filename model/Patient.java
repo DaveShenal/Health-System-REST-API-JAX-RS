@@ -4,11 +4,13 @@
  */
 package com.cw.model;
 
+import com.cw.validation.Validator;
+
 /**
  *
  * @author daves
  */
-public class Patient extends Person {
+public class Patient extends Person implements Validator{
 
     private int patientId;
     private String medicalHistory;

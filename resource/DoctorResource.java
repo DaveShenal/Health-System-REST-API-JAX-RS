@@ -59,7 +59,7 @@ public class DoctorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addDoctor(Doctor doctor) {
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(doctor);
+        RequestErrorHandler.validateEntitiy(doctor,"Doctor");
 
         // Add doctor
         LOGGER.info("Adding new doctor: {}", doctor);
@@ -81,7 +81,7 @@ public class DoctorResource {
         int doctorId = RequestErrorHandler.validateIdParam(doctorIdParam, "doctor");
 
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(updatedDoctor);
+        RequestErrorHandler.validateEntitiy(updatedDoctor,"Doctor");
         // Check if doctor exists
         checkExistingDoctor(doctorId, "update");
 

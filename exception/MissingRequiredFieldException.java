@@ -10,6 +10,6 @@ package com.cw.exception;
  */
 public class MissingRequiredFieldException extends RuntimeException {
     public MissingRequiredFieldException(String fieldName) {
-        super("Required field '" + fieldName + "' is missing in the request payload");
+        super("Required field in '" + fieldName + "' is missing in the request payload");
     }
 }

@@ -43,7 +43,7 @@ public class AppointmentResource {
     public Response getAppointmentById(@PathParam("appointmentId") String appointmentIdParam) {
         // Validate and parse appointment ID
         int appointmentId = RequestErrorHandler.validateIdParam(appointmentIdParam, "appointment");
-        
+
         // Check if appointment exists
         checkExistingAppointment(appointmentId, "get");
 
@@ -59,7 +59,7 @@ public class AppointmentResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addAppointment(Appointment appointment) {
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(appointment);
+        RequestErrorHandler.validateEntitiy(appointment, "Appointment");
         // Validate and set doctor and patient
         appointment.setDoctor(RequestErrorHandler.validateDoctorId(appointment.getDoctor()));
         appointment.setPatient(RequestErrorHandler.validatePatientId(appointment.getPatient()));
@@ -85,7 +85,7 @@ public class AppointmentResource {
         int appointmentId = RequestErrorHandler.validateIdParam(appointmentIdParam, "appointment");
 
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(updatedAppointment);
+        RequestErrorHandler.validateEntitiy(updatedAppointment, "Appointment");
         // Check if appointment exists
         checkExistingAppointment(appointmentId, "update");
         // Validate and set doctor and patient

@@ -4,12 +4,14 @@
  */
 package com.cw.model;
 
+import com.cw.validation.Validator;
+
 /**
  *
  * @author daves
  */
 
-public class Appointment {
+public class Appointment implements Validator{
 
     private int id;
     private String date;
@@ -68,6 +70,7 @@ public class Appointment {
         this.doctor = doctor;
     }
 
+    @Override
     public boolean areAllFieldsFilled() {
         return date != null && !date.isEmpty() && time != null && !time.isEmpty() && patient != null && doctor != null;
     }

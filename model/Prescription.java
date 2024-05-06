@@ -4,11 +4,13 @@
  */
 package com.cw.model;
 
+import com.cw.validation.Validator;
+
 /**
  *
  * @author daves
  */
-public class Prescription {
+public class Prescription implements Validator{
 
     private int id;
     private Patient patient;
@@ -87,6 +89,7 @@ public class Prescription {
         this.duration = duration;
     }
 
+    @Override
     public boolean areAllFieldsFilled() {
         return patient != null && doctor != null && medication != null && !medication.isEmpty() && dosage != null && !dosage.isEmpty() && instructions != null && !instructions.isEmpty() && duration != null && !duration.isEmpty();
     }

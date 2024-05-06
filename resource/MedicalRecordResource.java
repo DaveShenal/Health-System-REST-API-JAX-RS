@@ -59,7 +59,7 @@ public class MedicalRecordResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addMedicalRecord(MedicalRecord medicalRecord) {
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(medicalRecord);
+        RequestErrorHandler.validateEntitiy(medicalRecord,"Medical Record");
         // Validate and set patient
         medicalRecord.setPatient(RequestErrorHandler.validatePatientId(medicalRecord.getPatient()));
 
@@ -84,7 +84,7 @@ public class MedicalRecordResource {
         int recordId = RequestErrorHandler.validateIdParam(recordIdParam, "medical record");
 
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(updatedRecord);
+        RequestErrorHandler.validateEntitiy(updatedRecord, "Medical Record");
         // Check if medical record exists
         checkExistingMedicalRecord(recordId, "update");
         // Validate and set patient

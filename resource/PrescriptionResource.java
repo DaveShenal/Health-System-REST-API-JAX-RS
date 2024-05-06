@@ -58,7 +58,7 @@ public class PrescriptionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addPrescription(Prescription prescription) {
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(prescription);
+        RequestErrorHandler.validateEntitiy(prescription,"Prescription");
         // Validate and set patient and doctor
         prescription.setPatient(RequestErrorHandler.validatePatientId(prescription.getPatient()));
         prescription.setDoctor(RequestErrorHandler.validateDoctorId(prescription.getDoctor()));
@@ -82,7 +82,7 @@ public class PrescriptionResource {
         int prescriptionId = RequestErrorHandler.validateIdParam(prescriptionIdParam, "prescription");
 
         // Validate request body
-        RequestErrorHandler.checkNullRequestBody(updatedPrescription);
+        RequestErrorHandler.validateEntitiy(updatedPrescription,"Prescription");
         // Check if prescription exists
         checkExistingPrescription(prescriptionId, "update");
         // Validate and set patient and doctor

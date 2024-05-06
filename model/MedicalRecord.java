@@ -8,9 +8,10 @@ package com.cw.model;
  *
  * @author daves
  */
+import com.cw.validation.Validator;
 import java.util.List;
 
-public class MedicalRecord {
+public class MedicalRecord implements Validator{
 
     private int id;
     private Patient patient;
@@ -59,6 +60,7 @@ public class MedicalRecord {
         this.treatments = treatments;
     }
 
+    @Override
     public boolean areAllFieldsFilled() {
         return patient != null && diagnoses != null && !diagnoses.isEmpty() && treatments != null && !treatments.isEmpty();
     }

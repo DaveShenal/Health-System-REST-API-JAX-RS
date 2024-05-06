@@ -4,11 +4,13 @@
  */
 package com.cw.model;
 
+import com.cw.validation.Validator;
+
 /**
  *
  * @author daves
  */
-public class Billing {
+public class Billing implements Validator{
 
     private int id;
     private Patient patient;
@@ -57,6 +59,7 @@ public class Billing {
         this.isPaid = isPaid;
     }
 
+    @Override
     public boolean areAllFieldsFilled() {
         return patient != null && amount != 0.0;
     }
